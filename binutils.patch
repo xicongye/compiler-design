@@ -1,0 +1,26 @@
+diff --git a/include/opcode/riscv-opc.h b/include/opcode/riscv-opc.h
+index 743060c..532897b 100644
+--- a/include/opcode/riscv-opc.h
++++ b/include/opcode/riscv-opc.h
+@@ -2850,6 +2850,8 @@ funct6 VM  VS2  VS1/RS1/IMM funct3 VD   opcode
+ #define MASK_CUSTOM3_RD_RS1  0x707f
+ #define MATCH_CUSTOM3_RD_RS1_RS2 0x707b
+ #define MASK_CUSTOM3_RD_RS1_RS2  0x707f
++#define MATCH_MAC 0xae00700b
++#define MASK_MAC 0xfe00707f
+ /* Privileged CSR addresses (v1.11).  */
+ #define CSR_USTATUS 0x0
+ #define CSR_UIE 0x4
+diff --git a/opcodes/riscv-opc.c b/opcodes/riscv-opc.c
+index 901483b..f765194 100644
+--- a/opcodes/riscv-opc.c
++++ b/opcodes/riscv-opc.c
+@@ -897,6 +897,8 @@ const struct riscv_opcode riscv_opcodes[] =
+ {"divuw",    64, INSN_CLASS_M, "d,s,t",  MATCH_DIVUW, MASK_DIVUW, match_opcode, 0 },
+ {"remw",     64, INSN_CLASS_M, "d,s,t",  MATCH_REMW, MASK_REMW, match_opcode, 0 },
+ {"remuw",    64, INSN_CLASS_M, "d,s,t",  MATCH_REMUW, MASK_REMUW, match_opcode, 0 },
++{"mac",       0, INSN_CLASS_M, "d,s,t",  MATCH_MAC, MASK_MAC, match_opcode, 0 },
++
+ 
+ /* Half-precision floating-point instruction subset */
+ {"flh",        0, INSN_CLASS_F_AND_ZFH,   "D,o(s)",  MATCH_FLH, MASK_FLH, match_opcode, INSN_DREF|INSN_2_BYTE },

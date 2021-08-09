@@ -1,0 +1,45 @@
+diff --git a/disasm/disasm.cc b/disasm/disasm.cc
+index 5741c43..0165c5b 100644
+--- a/disasm/disasm.cc
++++ b/disasm/disasm.cc
+@@ -606,6 +606,7 @@ disassembler_t::disassembler_t(int xlen)
+   DEFINE_RTYPE(divuw);
+   DEFINE_RTYPE(remw);
+   DEFINE_RTYPE(remuw);
++  DEFINE_RTYPE(mac);
+ 
+   DEFINE_ITYPE_SHIFT(slli_uw);
+   add_insn(new disasm_insn_t("zext.w", match_add_uw, mask_add_uw | mask_rs2, {&xrd, &xrs1}));
+diff --git a/riscv/encoding.h b/riscv/encoding.h
+index 55088d6..8a6c3a7 100644
+--- a/riscv/encoding.h
++++ b/riscv/encoding.h
+@@ -2142,6 +2142,8 @@
+ #define MASK_VL4R_V  0xfff0707f
+ #define MATCH_VL8R_V 0x1e807007
+ #define MASK_VL8R_V  0xfff0707f
++#define MATCH_MAC 0xae00700b
++#define MASK_MAC 0xfe00707f
+ #define MATCH_ADD8 0x48000077
+ #define MASK_ADD8  0xfe00707f
+ #define MATCH_ADD16 0x40000077
+@@ -4039,6 +4041,7 @@ DECLARE_INSN(vl1r_v, MATCH_VL1R_V, MASK_VL1R_V)
+ DECLARE_INSN(vl2r_v, MATCH_VL2R_V, MASK_VL2R_V)
+ DECLARE_INSN(vl4r_v, MATCH_VL4R_V, MASK_VL4R_V)
+ DECLARE_INSN(vl8r_v, MATCH_VL8R_V, MASK_VL8R_V)
++DECLARE_INSN(mac, MATCH_MAC, MASK_MAC)
+ DECLARE_INSN(add8, MATCH_ADD8, MASK_ADD8)
+ DECLARE_INSN(add16, MATCH_ADD16, MASK_ADD16)
+ DECLARE_INSN(add64, MATCH_ADD64, MASK_ADD64)
+diff --git a/riscv/riscv.mk.in b/riscv/riscv.mk.in
+index 055d6d1..8daa448 100644
+--- a/riscv/riscv.mk.in
++++ b/riscv/riscv.mk.in
+@@ -195,6 +195,7 @@ riscv_insn_ext_m = \
+ 	remu \
+ 	remuw \
+ 	remw \
++	mac \
+ 
+ riscv_insn_ext_f = \
+ 	fadd_s \
